@@ -1,0 +1,98 @@
+<!-- index.hbs -->
+<h1>The server is running!</h1>
+<p>If you see this text, the server is <strong>definitely</strong> working!</p>
+
+{{!-- Create a table --}}
+<table id="user-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the pcurrentAddress renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, firstName, lastName, email and currentAddress, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.usersID}}</td>
+            <td>{{this.firstName}}</td>
+            <td>{{this.lastName}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.currentAddress}}</td>
+            <td><button onclick="deleteUser({{this.usersID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<!-- /views/index.hbs -->
+
+{{!-- Form to add a record to the table --}}
+<h2>Adding Data with AJAX</h2>
+<p>To add a new user, please enter their information below and click 'Submit'!</p>
+<form id="add-user-form-ajax">
+    
+    <label for="input-firstName">First Name: </label>
+    <input type="text" name="input-firstName" id="input-firstName">
+
+    <label for="input-lastName">Last Name: </label>
+    <input type="text" name="input-lastName" id="input-lastName">
+
+    <label for="input-email">Email: </label>
+    <input type="text" name="input-email" id="input-email">
+
+    <label for="input-currentAddress">Current Address: </label>
+    <input type="text" name="input-currentAddress" id="input-currentAddress">
+
+    <input type="submit">
+</form>
+
+<h2>Search Using an HTML Form</h2>
+<p>Search by last name using the field below. Partial last names are OK too!</p>
+<form id="search-user-html" method='GET' action='/'>
+    <label for="input-lastName">Search by Last Name: </label>
+    <input type="text" name="lastName" id="input-lastName-html-search">
+
+    <input type="submit">
+    <a href='/'><button>Reset</button></a>
+</form>
+
+<h2>Updating A User's email Form</h2>
+<p>To update a specific user's email select their name from the drop-down menu on the left and their desired
+    email from the drop down menu on the right</p>
+<form id="update-user-form-ajax">
+
+    <label for="input-fullname">Full name: </label>
+    <select name="input-fullname" id="mySelect">
+        <option value="test">Select a user</option>
+        {{#each data}}
+        <option value="{{this.usersID}}">{{this.firstName}} {{this.lastName}}</option>
+        {{/each}}
+    </select>
+
+    <label>New first name: </label>
+    <input type='text' id='input-firstname-update' name='input-firstname' />
+    
+    <label>New last name: </label>
+    <input type='text' id='input-lastname-update' name='input-lastname' />
+
+    
+    <input type="submit" onClick="window.location.reload()">
+
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_user.js"></script>
+<script src="./js/delete_user.js"></script>
+<script src="./js/update_user.js"></script>
